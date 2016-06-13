@@ -1,0 +1,15 @@
+{
+  "compilerOptions":{
+    "target":"ES5",
+    "watch":true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "node_modules",
+    "app/bower_components",
+    ".tmp",
+    ".idea"
+  ]
+}
