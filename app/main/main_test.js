@@ -1,16 +1,34 @@
 'use strict';
+describe('MainController', function () {
+    beforeEach(module('pizzaClient'));
 
-describe('myApp.view1 module', function() {
+    var $controller;
 
-  beforeEach(module('myApp.view1'));
-
-  describe('view1 controller', function(){
-
-    it('should ....', inject(function($controller) {
-      //spec body
-      var view1Ctrl = $controller('View1Ctrl');
-      expect(view1Ctrl).toBeDefined();
+    beforeEach(inject(function(_$controller_){
+        $controller = _$controller_;
     }));
 
-  });
+    describe('paginate the list of toppings', function () {
+        it('paginates by splitting the list', function() {
+
+            var $scope = {};
+            var viewCtrl = $controller('MainController', {$scope: $scope});
+            expect(viewCtrl).toBeDefined();
+
+            var toppings = []
+
+            for(var i = 0; i < 50; i++){
+                var topping = new ToppingItem();
+                topping.id = i;
+                topping.name = "Topping "+i;
+                toppings.push(topping);
+            }
+
+            viewCtrl.ToppingService = {toppings: toppings};
+
+            viewCtrl.paginateToppings();
+
+            expect(viewCtrl.paginatedToppings.length).toEqual(viewCtrl.itemsPerPage);
+        });
+    });
 });
