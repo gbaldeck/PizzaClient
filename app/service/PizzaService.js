@@ -19,12 +19,23 @@ var app;
                 });
                 return deferred.promise;
             };
-            PizzaService.prototype.getToppings = function (pizza) {
-                this.PizzaResource.query({ id: pizza.id, toppings: 'toppings' }).$promise.then(function (data) {
-                    pizza.toppings = data;
+            PizzaService.prototype.getPizzaToppings = function (pizzaId) {
+                return this.PizzaResource.query({ id: pizzaId, toppings: 'toppings' }).$promise;
+            };
+            PizzaService.prototype.createPizza = function (name, desc) {
+                var _this = this;
+                var deferred = this.$q.defer();
+                var jsonPizza = { pizza: { name: name, description: desc } };
+                this.PizzaResource.save({}, jsonPizza).$promise.then(function (data) {
+                    _this.pizzas.push(data);
+                    deferred.resolve();
                 }, function (error) {
-                    console.log(error);
+                    deferred.reject();
                 });
+                return deferred.promise;
+            };
+            PizzaService.prototype.addTopping = function (pizzaId, toppingId) {
+                return this.PizzaResource.save({ id: pizzaId, toppings: 'toppings' }, { topping_id: toppingId }).$promise;
             };
             PizzaService.$inject = ['$resource', '$q'];
             return PizzaService;

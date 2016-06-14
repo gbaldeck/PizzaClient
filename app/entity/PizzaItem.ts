@@ -1,15 +1,15 @@
 module app.entity{
     export interface IPizzaItem{
-        id:String;
-        name:String;
-        description:String;
+        id:string;
+        name:string;
+        description:string;
         toppings:IToppingItem[];
     }
 
     export class PizzaItem implements IPizzaItem{
-        id:String;
-        name:String;
-        description:String;
+        id:string;
+        name:string;
+        description:string;
         toppings:IToppingItem[];
     }
 }

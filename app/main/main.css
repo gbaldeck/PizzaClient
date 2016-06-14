@@ -28,3 +28,22 @@ table{
 .form-space{
     margin-top: 10px;
 }
+
+.pizza-flex{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.pizza-flex-left{
+    margin-right: auto;
+}
+
+.pizza-page-flex{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-body, .modal-header, .modal-footer {
+    word-wrap: break-word;
+}

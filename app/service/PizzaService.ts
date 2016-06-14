@@ -12,8 +12,10 @@ module app.service {
 
     export interface IPizzaService {
         pizzas:IPizzaItem[];
-        getToppings(pizza:IPizzaItem):void;
+        getPizzaToppings(pizzaId:string):IPromise<any>;
         fetchPizzas():IPromise<any>;
+        createPizza(name:string, desc:string):IPromise<any>;
+        addTopping(pizzaId:string, toppingId:string):IPromise<any>;
     }
 
     interface IPizzaResource extends IResource<IPizzaItem> {}
@@ -46,15 +48,29 @@ module app.service {
             return deferred.promise;
         }
 
-        getToppings(pizza:IPizzaItem):void {
-            this.PizzaResource.query({id: pizza.id, toppings: 'toppings'}).$promise.then(
-                (data) => {
-                    pizza.toppings = <any>data;
+        getPizzaToppings(pizzaId:string):IPromise<any> {
+            return this.PizzaResource.query({id: pizzaId, toppings: 'toppings'}).$promise;
+        }
+
+        createPizza(name:string, desc:string):IPromise<any>{
+            var deferred = this.$q.defer();
+            var jsonPizza = {pizza: {name: name, description: desc}};
+
+            this.PizzaResource.save({}, jsonPizza).$promise.then(
+                (data) =>{
+                    this.pizzas.push(data);
+                    deferred.resolve();
                 },
                 (error) => {
-                    console.log(error);
+                    deferred.reject();
                 }
             );
+            
+            return deferred.promise;
+        }
+        
+        addTopping(pizzaId:string, toppingId:string):IPromise<any>{
+            return this.PizzaResource.save({id: pizzaId, toppings: 'toppings'}, {topping_id: toppingId}).$promise;
         }
     }
 

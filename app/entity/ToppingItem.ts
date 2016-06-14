@@ -1,11 +1,11 @@
 module app.entity{
     export interface IToppingItem{
-        id:String;
-        name:String;
+        id:string;
+        name:string;
     }
 
     export class ToppingItem implements IToppingItem{
-        id:String;
-        name:String;
+        id:string;
+        name:string;
     }
 }
