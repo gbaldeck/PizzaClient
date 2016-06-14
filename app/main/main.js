@@ -12,6 +12,7 @@ var app;
                 this.pizzaPageNumber = 1;
                 this.toppingsPageNumber = 1;
                 this.newTopping = "";
+                this.errors = {};
                 this.PizzaService.fetchPizzas().then(function () {
                     _this.paginatePizzas();
                 }, function () {
@@ -42,11 +43,27 @@ var app;
                 }
             };
             MainController.prototype.createTopping = function () {
+                var _this = this;
                 if (this.newTopping && this.newTopping.trim() != "") {
+                    this.errors['toppingName'] = null;
+                    var promise = this.ToppingService.createTopping(this.newTopping);
+                    promise.then(function () {
+                        _this.toppingSaved = true;
+                        _this.toppingsPageNumber = _this.totalToppingPages();
+                        _this.paginateToppings();
+                    }, function () {
+                        _this.errors['toppingName'] = "There was an error saving the topping.";
+                    });
                 }
                 else {
-                    alert("You must enter a name for the topping.");
+                    this.errors['toppingName'] = "You must enter a name for the topping.";
                 }
+            };
+            MainController.prototype.totalPizzaPages = function () {
+                return Math.ceil(this.PizzaService.pizzas.length / this.itemsPerPage);
+            };
+            MainController.prototype.totalToppingPages = function () {
+                return Math.ceil(this.ToppingService.toppings.length / this.itemsPerPage);
             };
             MainController.$inject = ['PizzaService', 'ToppingService'];
             return MainController;

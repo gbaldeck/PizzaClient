@@ -20,3 +20,11 @@
 table{
     border: 1px solid #ddd;
 }
+
+.pizza-td{
+    min-height: 20px !important;
+}
+
+.form-space{
+    margin-top: 10px;
+}

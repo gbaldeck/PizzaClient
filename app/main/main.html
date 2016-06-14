@@ -25,16 +25,16 @@
                                     <table class="table table-hover table-condensed"
                                            ng-show="vm.paginatedPizzas && vm.paginatedToppings">
                                         <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Name</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="pizza in vm.paginatedPizzas track by $index">
-                                                <td>
-                                                    {{pizza.name}}
-                                                </td>
-                                            </tr>
+                                        <tr class="pizza-td" ng-repeat="pizza in vm.paginatedPizzas track by $index">
+                                            <td class="pizza-td">
+                                                {{pizza.name}}
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                     <div ng-hide="vm.paginatedPizzas && vm.paginatedToppings"
@@ -42,12 +42,14 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="row bottom-bar">
-                                        <div class="col-xs-8 btn-group btn-group-md">
-                                            <button type="button" class="btn btn-primary btn-md">Edit</button>
-                                            <button type="button" class="btn btn-primary btn-md">Details</button>
+                                        <div class="col-xs-12">
+                                            <input type="text" class="form-control" placeholder="Name">
                                         </div>
-                                        <div class="col-xs-4">
-                                            <button type="button" class="btn btn-primary btn-md pull-right">New</button>
+                                        <div class="col-xs-12 form-space">
+                                            <input type="text" class="form-control" placeholder="Description">
+                                        </div>
+                                        <div class="col-xs-12 form-space">
+                                            <button type="button" class="btn btn-primary btn-md">Add</button>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +94,7 @@
                                 <div class="col-xs-12">
                                     <div class="bottom-bar">
                                         <div class="col-xs-12 input-group">
-                                            <input type="text" class="form-control" placeholder="Name of topping"
+                                            <input type="text" class="form-control" placeholder="New topping"
                                                    ng-model="vm.newTopping">
                                             <span class="input-group-btn">
                                                 <button type="button"
@@ -101,6 +103,18 @@
                                             </button>
                                             </span>
                                         </div>
+                                    </div>
+                                    <div ng-show="vm.errors['toppingName']"
+                                         class="col-x-12 alert alert-danger">
+                                        <a href="#" class="close"
+                                           ng-click="vm.errors['toppingName'] = null">&times;</a>
+                                        {{vm.errors['toppingName']}}
+                                    </div>
+                                    <div ng-show="vm.toppingSaved"
+                                         class="col-xs-12 alert alert-success">
+                                        <a href="#" class="close"
+                                           ng-click="vm.toppingSaved = false">&times;</a>
+                                        <strong>Success!</strong> The topping was added.
                                     </div>
                                 </div>
                             </div>

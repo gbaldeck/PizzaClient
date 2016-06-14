@@ -11,6 +11,7 @@ module app.service{
     export interface IToppingService {
         toppings:IToppingItem[];
         fetchToppings():IPromise<any>;
+        createTopping(name:string):IPromise<any>;
     }
 
     interface IToppingResource extends IResource<IToppingItem> {}
@@ -32,7 +33,6 @@ module app.service{
             this.ToppingResource.query({}).$promise.then(
                 (data) => {
                     this.toppings = <any>data;
-                    console.log(this.toppings);
                     deferred.resolve();
                 },
                 (error) => {
@@ -44,8 +44,21 @@ module app.service{
             return deferred.promise;
         }
 
-        createTopping(topping:IToppingItem){
+        createTopping(name:string):IPromise<any> {
+            var jsonTopping = {topping: {name: name}};
+            var deferred = this.$q.defer();
 
+            this.ToppingResource.save(jsonTopping,
+                (data) =>{
+                    this.toppings.push(data);
+                    deferred.resolve();
+                },
+                (error) => {
+                    deferred.reject();
+                }
+            );
+
+            return deferred.promise;
         }
     }
     

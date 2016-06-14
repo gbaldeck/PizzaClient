@@ -13,12 +13,16 @@ module app.main {
         private pizzaPageNumber:number;
         private toppingsPageNumber:number;
         private newTopping:string;
+        private toppingSaved:boolean;
+        
+        private errors:any;
 
         static $inject = ['PizzaService', 'ToppingService']
         constructor(private PizzaService:IPizzaService, private ToppingService:IToppingService) {
             this.pizzaPageNumber = 1;
             this.toppingsPageNumber = 1;
             this.newTopping = "";
+            this.errors = {};
             
             this.PizzaService.fetchPizzas().then(
                 () => {
@@ -67,11 +71,31 @@ module app.main {
 
         createTopping():void{
             if(this.newTopping && this.newTopping.trim() != ""){
+                this.errors['toppingName'] = null;
+                var promise = this.ToppingService.createTopping(this.newTopping);
                 
+                promise.then(
+                    () => {
+                        this.toppingSaved = true;
+                        this.toppingsPageNumber = this.totalToppingPages();
+                        this.paginateToppings();
+                    },
+                    () => {
+                        this.errors['toppingName'] = "There was an error saving the topping."
+                    }
+                );
             }
             else{
-                alert("You must enter a name for the topping.")
+                this.errors['toppingName'] = "You must enter a name for the topping.";
             }
+        }
+
+        totalPizzaPages():number{
+            return Math.ceil(this.PizzaService.pizzas.length / this.itemsPerPage);
+        }
+
+        totalToppingPages():number{
+            return Math.ceil(this.ToppingService.toppings.length / this.itemsPerPage);
         }
     }
 
